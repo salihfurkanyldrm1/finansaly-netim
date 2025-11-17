@@ -5,18 +5,18 @@ from datetime import datetime, timedelta
 import firebase_admin
 from firebase_admin import credentials, db
 import hashlib
-import json
 
 # =============================
 # 🔧 Firebase Bağlantısı (Secrets ile)
 # =============================
 if not firebase_admin._apps:
-    firebase_json = st.secrets["firebase"]["key"]
-    cred_dict = json.loads(firebase_json)
-    cred = credentials.Certificate(cred_dict)
+    firebase_config = st.secrets["FIREBASE"]
+    # private_key düzgün formatta olmalı
+    firebase_config["private_key"] = firebase_config["private_key"].replace("\\n", "\n")
+    cred = credentials.Certificate(firebase_config)
 
     firebase_admin.initialize_app(cred, {
-        "databaseURL": "https://finansapp-47c29-default-rtdb.europe-west1.firebasedatabase.app/"
+        "databaseURL": "https://finansalyon-default-rtdb.firebaseio.com/"
     })
 
 # =============================
@@ -129,7 +129,7 @@ if st.button("💾 Kaydı Ekle"):
     liste.append(yeni)
     user_ref.set(liste)
     st.success("Kayıt eklendi!")
-    st.rerun()
+    st.experimental_rerun()
 
 # =============================
 # 📋 Kayıtları Göster
@@ -150,7 +150,7 @@ if not df.empty:
         df = df.drop(sec).reset_index(drop=True)
         user_ref.set(df.to_dict(orient="records"))
         st.success("Kayıt silindi.")
-        st.rerun()
+        st.experimental_rerun()
 
 # =============================
 # 📈 ANLIK ANALİZ
