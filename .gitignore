@@ -1,0 +1,10 @@
+# Python cache
+__pycache__/
+*.pyc
+
+# Firebase JSON
+*.json
+
+# VSCode / PyCharm ayarları
+.vscode/
+.idea/
