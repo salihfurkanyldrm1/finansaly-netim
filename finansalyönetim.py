@@ -212,3 +212,4 @@ if not df.empty:
 
 else:
     st.info("Analiz için veri yok.")
+st.write("Test mesajı: kod güncellendi ✅")
