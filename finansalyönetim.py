@@ -15,7 +15,7 @@ if not firebase_admin._apps:
     firebase_config_raw["private_key"] = firebase_config_raw["private_key"].replace("\\n", "\n")
     cred = credentials.Certificate(firebase_config_raw)
     firebase_admin.initialize_app(cred, {
-        "databaseURL": "https://finansalyon-default-rtdb.firebaseio.com/"
+        "databaseURL": st.secrets["FIREBASE"]["databaseURL"]
     })
 
 # =============================
@@ -184,7 +184,7 @@ if not df.empty:
         st.info("Gider olmadığı için grafik oluşturulamadı.")
 
     # -----------------------------
-    # 🍕 2) Gider Kategorileri Pie Chart (YENİ)
+    # 🍕 2) Gider Kategorileri Pie Chart
     # -----------------------------
     st.subheader("🟠 Gider Kategorilerinin Yüzdesel Dağılımı")
 
