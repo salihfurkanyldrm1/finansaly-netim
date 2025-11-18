@@ -6,7 +6,9 @@ import firebase_admin
 from firebase_admin import credentials, db
 import hashlib
 
+# =============================
 # 🔧 Firebase Bağlantısı (Secrets ile)
+# =============================
 if not firebase_admin._apps:
     firebase_config_raw = dict(st.secrets["FIREBASE"])
     firebase_config_raw["private_key"] = firebase_config_raw["private_key"].replace("\\n", "\n")
@@ -14,6 +16,7 @@ if not firebase_admin._apps:
     firebase_admin.initialize_app(cred, {
         "databaseURL": "https://finansalyonetim11-8e3ed-default-rtdb.firebaseio.com/"
     })
+
 # =============================
 # 🔐 Basit Kullanıcı Doğrulama
 # =============================
@@ -72,7 +75,7 @@ if not st.session_state["logged_in"]:
             st.success(msg)
             st.session_state["logged_in"] = True
             st.session_state["user"] = kullanici_input
-            st.experimental_rerun()
+            st.stop()  # sayfa akışı burada durur, state güncel
         else:
             st.error(msg)
 
@@ -86,7 +89,8 @@ st.sidebar.markdown(f"**Giriş yapan:** {kullanici}")
 
 if st.sidebar.button("Çıkış Yap"):
     st.session_state["logged_in"] = False
-    st.experimental_rerun()
+    st.session_state["user"] = None
+    st.stop()  # sayfa akışı durur, kullanıcı çıkış yapmış olur
 
 user_ref = db.reference(f"kullanicilar/{kullanici}")
 
@@ -124,7 +128,7 @@ if st.button("💾 Kaydı Ekle"):
     liste.append(yeni)
     user_ref.set(liste)
     st.success("Kayıt eklendi!")
-    st.experimental_rerun()
+    st.stop()  # sayfa akışı burada durur
 
 # =============================
 # 📋 Kayıtları Göster
@@ -145,7 +149,7 @@ if not df.empty:
         df = df.drop(sec).reset_index(drop=True)
         user_ref.set(df.to_dict(orient="records"))
         st.success("Kayıt silindi.")
-        st.experimental_rerun()
+        st.stop()
 
 # =============================
 # 📈 ANLIK ANALİZ
