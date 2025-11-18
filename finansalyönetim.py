@@ -112,25 +112,26 @@ if tur == "Gelir":
     gider_turu = "-"
 else:
     kategori = st.selectbox("Kategori seçin:", [
-        "Kira/Konut Kredisi",
-        "Vergi Giderleri",
-        "Sigorta Giderleri",
-        "Isınma Giderleri",
-        "Elektrik Giderleri",
-        "İletişim Giderleri",
-        "Onarım/Bakım/Tadilat Giderleri",
-        "Market Alışverişleri",
-        "Temel Gıda Giderleri",
-        "Restoran/Cafe Giderleri",
-        "Temizlik Malzemesi Giderleri",
-        "Ulaşım Giderleri",
-        "Sağlık Giderleri",
-        "Eğitim/Kişisel Gelişim Giderleri",
-        "Giyim/Aksesuar Giderleri",
-        "Kişisel Bakım Giderleri",
-        "Eğlence/Sosyal Yaşam Giderleri",
-        "Finansal Giderler",
-        "Diğer Giderler"
+        "Konut > Kira/Konut Kredisi",
+        "Konut > Onarım/Bakım/Tadilat Giderleri",
+        "Konut > Isınma Giderleri",
+        "Sigorta > Konut Sigortası",
+        "Sigorta > Sağlık Sigortası",
+        "Vergi > Emlak Vergisi",
+        "Vergi > Diğer Vergiler",
+        "Fatura > Elektrik Giderleri",
+        "Fatura > İletişim Giderleri",
+        "Gıda > Market Alışverişleri",
+        "Gıda > Temel Gıda Giderleri",
+        "Gıda > Restoran/Cafe Giderleri",
+        "Sağlık > Sağlık Giderleri",
+        "Eğitim > Eğitim/Kişisel Gelişim Giderleri",
+        "Ulaşım > Ulaşım Giderleri",
+        "Kişisel > Kişisel Bakım Giderleri",
+        "Kişisel > Giyim/Aksesuar Giderleri",
+        "Eğlence > Eğlence/Sosyal Yaşam Giderleri",
+        "Finans > Finansal Giderler",
+        "Diğer > Diğer Giderler"
     ])
     gider_turu = st.radio("Gider türü seçin:", ["İhtiyaç", "İstek"])
 
