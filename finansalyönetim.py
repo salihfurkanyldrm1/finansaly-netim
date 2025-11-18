@@ -12,10 +12,12 @@ import hashlib
 if not firebase_admin._apps:
     # Secrets immutable, önce dict olarak kopyala
     firebase_config_raw = dict(st.secrets["FIREBASE"])
-    firebase_config_raw["private_key"] = firebase_config_raw["private_key"].replace("\\n", "\n")
+    # private_key içindeki \\n karakterlerini gerçek new-line karakterine çevir
+    if "private_key" in firebase_config_raw:
+        firebase_config_raw["private_key"] = firebase_config_raw["private_key"].replace("\\n", "\n")
     cred = credentials.Certificate(firebase_config_raw)
     firebase_admin.initialize_app(cred, {
-        "databaseURL": st.secrets["FIREBASE"]["databaseURL"]
+        "databaseURL": firebase_config_raw.get("databaseURL", "https://finansalyon-default-rtdb.firebaseio.com/")
     })
 
 # =============================
