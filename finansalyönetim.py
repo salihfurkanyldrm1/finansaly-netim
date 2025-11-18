@@ -98,7 +98,7 @@ user_ref = db.reference(f"kullanicilar/{kullanici}")
 # 📊 Veri Yükleme
 # =============================
 veri = user_ref.get()
-df = pd.DataFrame(veri) if veri else pd.DataFrame(columns=["Tarih", "Tür", "Kategori", "Alt Kategori", "Tutar", "Gider Türü"])
+df = pd.DataFrame(veri) if veri else pd.DataFrame(columns=["Tarih", "Tür", "Kategori", "Tutar", "Gider Türü"])
 
 # =============================
 # 📝 Yeni Kayıt Ekleme
@@ -107,28 +107,31 @@ st.header("📝 Yeni Kayıt Ekle")
 
 tur = st.radio("Tür seçin:", ["Gelir", "Gider"], horizontal=True)
 
-# Alt kategorili seçenekler
-kategori_dict = {
-    "Konut": ["Kira", "Konut Kredisi", "Onarım/Bakım/Tadilat"],
-    "Fatura ve Vergi": ["Elektrik", "Isınma", "İletişim", "Vergi Giderleri"],
-    "Sağlık": ["Sağlık Giderleri", "Sigorta Giderleri"],
-    "Market & Gıda": ["Market Alışverişleri", "Temel Gıda", "Restoran/Cafe", "Temizlik Malzemesi"],
-    "Ulaşım": ["Ulaşım Giderleri"],
-    "Eğitim & Gelişim": ["Eğitim/Kişisel Gelişim"],
-    "Giyim & Kişisel Bakım": ["Giyim/Aksesuar", "Kişisel Bakım"],
-    "Eğlence & Sosyal": ["Eğlence/Sosyal Yaşam"],
-    "Finans": ["Finansal Giderler"],
-    "Diğer": ["Diğer Giderler"]
-}
-
 if tur == "Gelir":
     kategori = st.selectbox("Kategori seçin:", ["Maaş", "Ek Gelir", "Yatırım", "Diğer"])
-    alt_kategori = "-"
     gider_turu = "-"
 else:
-    ana_kategori = st.selectbox("Ana kategori seçin:", list(kategori_dict.keys()))
-    alt_kategori = st.selectbox("Alt kategori seçin:", kategori_dict[ana_kategori])
-    kategori = ana_kategori
+    kategori = st.selectbox("Kategori seçin:", [
+        "Kira/Konut Kredisi",
+        "Vergi Giderleri",
+        "Sigorta Giderleri",
+        "Isınma Giderleri",
+        "Elektrik Giderleri",
+        "İletişim Giderleri",
+        "Onarım/Bakım/Tadilat Giderleri",
+        "Market Alışverişleri",
+        "Temel Gıda Giderleri",
+        "Restoran/Cafe Giderleri",
+        "Temizlik Malzemesi Giderleri",
+        "Ulaşım Giderleri",
+        "Sağlık Giderleri",
+        "Eğitim/Kişisel Gelişim Giderleri",
+        "Giyim/Aksesuar Giderleri",
+        "Kişisel Bakım Giderleri",
+        "Eğlence/Sosyal Yaşam Giderleri",
+        "Finansal Giderler",
+        "Diğer Giderler"
+    ])
     gider_turu = st.radio("Gider türü seçin:", ["İhtiyaç", "İstek"])
 
 tutar = st.number_input("Tutar (₺)", min_value=0.0, step=10.0)
@@ -138,7 +141,6 @@ if st.button("💾 Kaydı Ekle"):
         "Tarih": datetime.now().strftime("%Y-%m-%d"),
         "Tür": tur,
         "Kategori": kategori,
-        "Alt Kategori": alt_kategori,
         "Tutar": tutar,
         "Gider Türü": gider_turu
     }
@@ -209,7 +211,7 @@ if not df.empty:
     gider_df = df[df["Tür"] == "Gider"]
 
     if not gider_df.empty:
-        kategori_toplam = gider_df.groupby("Alt Kategori")["Tutar"].sum()
+        kategori_toplam = gider_df.groupby("Kategori")["Tutar"].sum()
 
         plt.figure(figsize=(6,6))
         plt.pie(kategori_toplam, labels=kategori_toplam.index, autopct="%1.1f%%")
