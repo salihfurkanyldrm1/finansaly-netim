@@ -5,13 +5,13 @@ from datetime import datetime, timedelta
 import firebase_admin
 from firebase_admin import credentials, db
 import hashlib
-import copy  # Secrets için eklendi
 
 # =============================
 # 🔧 Firebase Bağlantısı (Secrets ile)
 # =============================
 if not firebase_admin._apps:
-    firebase_config_raw = copy.deepcopy(st.secrets["FIREBASE"])
+    # deepcopy yerine dict kullanıyoruz
+    firebase_config_raw = dict(st.secrets["FIREBASE"])
     firebase_config_raw["private_key"] = firebase_config_raw["private_key"].replace("\\n", "\n")
     
     cred = credentials.Certificate(firebase_config_raw)
